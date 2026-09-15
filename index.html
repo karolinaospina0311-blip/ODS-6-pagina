@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ODS 6 · Agua limpia y saneamiento</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <div class="brand"><span class="dot"></span> ODS 6</div>
+    <nav class="links">
+      <a href="#panorama">Panorama</a>
+      <a href="#metas">Metas</a>
+      <a href="#ods-global">Los 17 ODS</a>
+      <a href="#tiempo">Línea de tiempo</a>
+      <a href="#calculadora">Tu huella hídrica</a>
+      <a href="#accion">Actuar</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <div class="kicker">Objetivo de Desarrollo Sostenible 6</div>
+      <h1>Agua limpia<br>y <em>saneamiento</em><br>para todos</h1>
+      <p class="lede">Garantizar la disponibilidad de agua y su gestión sostenible, y el saneamiento para todas las personas, en todos los lugares, antes de 2030.</p>
+      <div class="hero-cta">
+        <a href="#metas" class="btn btn-primary">Explorar las metas</a>
+        <a href="#calculadora" class="btn btn-ghost">Calcula tu consumo</a>
+      </div>
+    </div>
+    <div class="drop-figure">
+      <div>
+        <div class="glass"><div class="fill" id="heroFill" style="height:26%"></div></div>
+        <div class="glass-cap"><strong id="heroPct">26%</strong><br>de la población mundial no tiene acceso a servicios de agua potable gestionados de forma segura</div>
+      </div>
+    </div>
+  </div>
+  <div class="wave-divider">
+    <svg viewBox="0 0 1440 70" preserveAspectRatio="none">
+      <path d="M0,40 C240,90 480,0 720,30 C960,60 1200,10 1440,45 L1440,70 L0,70 Z" fill="#F5FAF9"></path>
+    </svg>
+  </div>
+</section>
+
+<section class="stats" id="panorama">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <h2>La brecha del agua, en cifras</h2>
+      <p>Aunque el acceso al agua ha mejorado en las últimas décadas, cientos de millones de personas siguen sin servicios básicos de agua y saneamiento.</p>
+    </div>
+    <div class="stats-grid reveal">
+      <div class="stat-cell">
+        <div class="stat-num" data-target="2200" data-suffix="M">0</div>
+        <div class="stat-label">personas viven sin acceso a agua potable gestionada de forma segura</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num" data-target="3500" data-suffix="M">0</div>
+        <div class="stat-label">personas carecen de servicios de saneamiento seguros</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num" data-target="80" data-suffix="%">0</div>
+        <div class="stat-label">de las aguas residuales del mundo se vierte sin tratar a los ecosistemas</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num" data-target="10" data-suffix="%">0</div>
+        <div class="stat-label">del uso mundial de agua dulce corresponde al consumo doméstico</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section metas" id="metas">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <h2>Ocho metas, un mismo objetivo</h2>
+      <p>El ODS 6 se compone de ocho metas que abarcan desde el acceso al agua potable hasta la protección de los ecosistemas hídricos. Selecciona una para leer su alcance.</p>
+    </div>
+
+    <div class="metas-layout reveal">
+      <div class="meta-tabs" id="metaTabs" role="tablist" aria-label="Metas del ODS 6"></div>
+      <div class="meta-panel" id="metaPanel"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section ods-global" id="ods-global">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <h2>El agua conecta los 17 objetivos</h2>
+      <p>El ODS 6 no existe de forma aislada: la disponibilidad de agua influye — y es influida — por los otros 16 Objetivos de Desarrollo Sostenible. Toca cualquier objetivo para ver su relación con el agua.</p>
+    </div>
+
+    <div class="reveal">
+      <div class="ods-grid" id="odsGrid"></div>
+      <div class="ods-detail" id="odsDetail"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section timeline" id="tiempo">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <h2>Cómo llegamos hasta aquí</h2>
+      <p>El reconocimiento del agua como prioridad global es un proceso de décadas. Toca cada hito para leer más.</p>
+    </div>
+    <div class="timeline-list reveal" id="timelineList"></div>
+  </div>
+</section>
+
+<section class="section calc" id="calculadora">
+  <div class="wrap reveal">
+    <div class="calc-card">
+      <div>
+        <h2>¿Cuánta agua usas al día?</h2>
+        <p>Mueve los controles para estimar tu consumo diario aproximado y compararlo con el promedio recomendado por persona.</p>
+
+        <div class="calc-controls">
+          <div class="calc-row">
+            <label>Minutos de ducha <span class="val" id="showerVal">8 min</span></label>
+            <input type="range" id="shower" min="1" max="30" value="8">
+          </div>
+          <div class="calc-row">
+            <label>Descargas del inodoro al día <span class="val" id="toiletVal">5</span></label>
+            <input type="range" id="toilet" min="0" max="12" value="5">
+          </div>
+          <div class="calc-row">
+            <label>Cargas de lavadora por semana <span class="val" id="washVal">3</span></label>
+            <input type="range" id="wash" min="0" max="14" value="3">
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="calc-result">
+          <div class="big" id="litersOut">148</div>
+          <div class="unit">litros de agua estimados al día</div>
+        </div>
+        <div class="calc-note" id="calcNote">Cálculo aproximado con fines educativos, basado en promedios de consumo doméstico.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="accion">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <h2>Qué puedes hacer</h2>
+      <p>Pequeñas decisiones cotidianas, sumadas a nivel colectivo, contribuyen a cerrar la brecha del agua. Toca cada tarjeta para ver una acción concreta.</p>
+    </div>
+    <div class="acciones-grid reveal" id="accionesGrid"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div><strong>ODS 6</strong> · Agua limpia y saneamiento</div>
+    <div>Basado en la Agenda 2030 para el Desarrollo Sostenible · Página educativa</div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+</html>
