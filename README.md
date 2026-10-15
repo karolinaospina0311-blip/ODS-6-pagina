@@ -2,7 +2,7 @@
 
 **ODS abordado:** ODS 6 — Agua limpia y saneamiento (meta 6.4: uso eficiente de los recursos hídricos).
 
-🌐 **Aplicación desplegada:** `https://PENDIENTE.onrender.com` *(reemplazar por el enlace de Render)*
+🌐 **Aplicación desplegada:** `https://ecoagua.onrender.com` *(reemplazar por el enlace de Render)*
 📁 **Repositorio:** https://github.com/karolinaospina0311-blip/ODS-6-pagina
 
 ## 1. Descripción de la solución
