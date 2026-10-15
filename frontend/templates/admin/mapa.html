@@ -1,0 +1,22 @@
+{% extends "admin/base.html" %}
+{% block titulo %}Mapa de reportes{% endblock %}
+{% block cabeza %}<link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet/leaflet.css') }}">{% endblock %}
+{% block contenido %}
+<div class="admin-head">
+  <div>
+    <h1>Mapa de reportes</h1>
+    <p id="resumenMapa">Cargando reportes…</p>
+  </div>
+</div>
+<div class="mapa-controles" role="group" aria-label="Filtrar mapa">
+  <button type="button" class="chip activo" data-estado="">Todos</button>
+  {% for k, v in ESTADOS.items() %}<button type="button" class="chip est-{{ k }}" data-estado="{{ k }}"><span class="punto"></span>{{ v }}</button>{% endfor %}
+  <label class="check"><input type="checkbox" id="verZonas" checked> Resaltar zonas con más fugas</label>
+</div>
+<div id="mapaAdmin" class="mapa mapa-admin"></div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='vendor/leaflet/leaflet.js') }}"></script>
+<script>window.ECO_API_MAPA = {{ url_for('admin.api_mapa') | tojson }};</script>
+<script src="{{ url_for('static', filename='admin-mapa.js') }}"></script>
+{% endblock %}

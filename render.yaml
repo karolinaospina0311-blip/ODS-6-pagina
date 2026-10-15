@@ -1,0 +1,53 @@
+# EcoAgua · Despliegue en Render (Blueprint)
+# Render lee este archivo al crear un "Blueprint" desde el repositorio de GitHub:
+# crea la base de datos PostgreSQL y el servicio web, y los conecta.
+# Las contraseñas de los usuarios de prueba se escriben en el panel de Render (sync: false),
+# nunca en este archivo.
+
+databases:
+  - name: ecoagua-db
+    databaseName: ecoagua
+    user: ecoagua
+    plan: free
+
+services:
+  - type: web
+    name: ecoagua
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: >-
+      flask --app backend/app init-db &&
+      flask --app backend/app sembrar &&
+      gunicorn --chdir backend --workers 2 --timeout 60 --bind 0.0.0.0:$PORT app:app
+    healthCheckPath: /api/config
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12.7"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: ecoagua-db
+          property: connectionString
+      - key: ECOAGUA_SECRET_KEY
+        generateValue: true
+      - key: ECOAGUA_PROXY
+        value: "1"
+      - key: ECOAGUA_COOKIE_SEGURA
+        value: "1"
+      - key: ECOAGUA_DATOS_EJEMPLO
+        value: "1"
+      - key: ECOAGUA_MAPA_LAT
+        value: "8.7575"
+      - key: ECOAGUA_MAPA_LNG
+        value: "-75.8851"
+      - key: ECOAGUA_MAPA_ZOOM
+        value: "13"
+      - key: ECOAGUA_ADMIN_USUARIO
+        sync: false
+      - key: ECOAGUA_ADMIN_PASSWORD
+        sync: false
+      - key: ECOAGUA_OPERADOR_USUARIO
+        sync: false
+      - key: ECOAGUA_OPERADOR_PASSWORD
+        sync: false

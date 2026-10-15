@@ -1,0 +1,89 @@
+{% extends "admin/base.html" %}
+{% block titulo %}Gestión de reportes{% endblock %}
+{% block contenido %}
+<div class="admin-head">
+  <div>
+    <h1>Gestión de reportes</h1>
+    <p>{{ paginacion.total }} reporte{{ '' if paginacion.total == 1 else 's' }} {% if filtro_estado or q %}con los filtros actuales{% else %}en total{% endif %}.</p>
+  </div>
+</div>
+
+<form method="get" class="filtros">
+  <label class="campo">
+    <span>Buscar</span>
+    <input type="search" name="q" value="{{ q }}" placeholder="Número, nombre, correo, barrio…">
+  </label>
+  <label class="campo">
+    <span>Estado</span>
+    <select name="estado">
+      <option value="">Todos</option>
+      {% for k, v in ESTADOS.items() %}<option value="{{ k }}" {% if filtro_estado == k %}selected{% endif %}>{{ v }}</option>{% endfor %}
+    </select>
+  </label>
+  <label class="check">
+    <input type="checkbox" name="prueba" value="1" {% if ver_prueba %}checked{% endif %}> Incluir datos de prueba
+  </label>
+  <input type="hidden" name="prueba_enviado" value="1">
+  <button type="submit" class="btn btn-solid">Filtrar</button>
+  {% if filtro_estado or q %}<a class="btn btn-linea" href="{{ url_for('admin.reportes') }}">Quitar filtros</a>{% endif %}
+</form>
+
+{% if paginacion.items %}
+<div class="tabla-scroll">
+<table class="tabla tabla-reportes">
+  <thead>
+    <tr>
+      <th>Número</th><th>Fecha</th><th>Ciudadano</th><th>Contacto</th><th>Descripción</th>
+      <th>Foto</th><th>Ubicación</th><th>Estado</th><th>Actualizado</th><th></th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for r in paginacion.items %}
+    <tr>
+      <td data-t="Número"><div><a href="{{ url_for('admin.reporte_detalle', reporte_id=r.id) }}" class="num-seg">{{ r.numero_seguimiento }}</a>{% if r.es_prueba %} <span class="etq-prueba">Prueba</span>{% endif %}</div></td>
+      <td data-t="Fecha"><div>{{ fmt_fecha(r.fecha_creacion) }}</div></td>
+      <td data-t="Ciudadano"><div>{{ r.nombre_ciudadano }}</div></td>
+      <td data-t="Contacto"><div><a href="mailto:{{ r.correo }}">{{ r.correo }}</a>{% if r.telefono %}<br><a href="tel:{{ r.telefono }}">{{ r.telefono }}</a>{% endif %}</div></td>
+      <td data-t="Descripción" class="desc"><div><strong>{{ r.tipo_fuga_texto }}</strong><br>{{ r.descripcion | truncate(110) }}</div></td>
+      <td data-t="Foto"><div>{% if r.fotografia %}<a href="{{ url_for('admin.foto', reporte_id=r.id) }}" target="_blank" rel="noopener"><img class="mini-foto" src="{{ url_for('admin.foto', reporte_id=r.id) }}" alt="Foto de {{ r.numero_seguimiento }}" loading="lazy"></a>{% else %}<span class="tenue">Sin foto</span>{% endif %}</div></td>
+      <td data-t="Ubicación" class="coords"><div>
+        {% if r.barrio %}{{ r.barrio }}<br>{% endif %}
+        <a href="https://www.openstreetmap.org/?mlat={{ r.latitud }}&mlon={{ r.longitud }}#map=18/{{ r.latitud }}/{{ r.longitud }}" target="_blank" rel="noopener">{{ '%.5f'|format(r.latitud) }}, {{ '%.5f'|format(r.longitud) }}</a>
+      </div></td>
+      <td data-t="Estado"><div>
+        <form method="post" action="{{ url_for('admin.reporte_cambiar_estado', reporte_id=r.id) }}" class="estado-rapido">
+          <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+          <input type="hidden" name="volver" value="{{ request.full_path }}">
+          <select name="estado" class="sel-estado est-{{ r.estado }}" aria-label="Estado de {{ r.numero_seguimiento }}" onchange="this.form.requestSubmit()">
+            {% for k, v in ESTADOS.items() %}<option value="{{ k }}" {% if r.estado == k %}selected{% endif %}>{{ v }}</option>{% endfor %}
+          </select>
+          <noscript><button type="submit">Guardar</button></noscript>
+        </form>
+      </div></td>
+      <td data-t="Actualizado"><div>{{ fmt_fecha(r.fecha_actualizacion) }}</div></td>
+      <td><a class="btn btn-linea btn-sm" href="{{ url_for('admin.reporte_detalle', reporte_id=r.id) }}">Ver</a></td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+
+{% if paginacion.pages > 1 %}
+<nav class="paginacion" aria-label="Páginas">
+  {% if paginacion.has_prev %}<a class="btn btn-linea btn-sm" href="{{ url_for('admin.reportes', pagina=paginacion.prev_num, estado=filtro_estado, q=q, prueba=1 if ver_prueba else 0) }}">Anterior</a>{% endif %}
+  <span>Página {{ paginacion.page }} de {{ paginacion.pages }}</span>
+  {% if paginacion.has_next %}<a class="btn btn-linea btn-sm" href="{{ url_for('admin.reportes', pagina=paginacion.next_num, estado=filtro_estado, q=q, prueba=1 if ver_prueba else 0) }}">Siguiente</a>{% endif %}
+</nav>
+{% endif %}
+{% else %}
+<div class="vacio">
+  {% if filtro_estado or q %}
+    <h2>Ningún reporte coincide con la búsqueda</h2>
+    <p>Prueba con otro término o quita los filtros.</p>
+  {% else %}
+    <h2>Todavía no hay reportes</h2>
+    <p>Los reportes que envíen los ciudadanos desde el sitio público aparecerán aquí.</p>
+  {% endif %}
+</div>
+{% endif %}
+{% endblock %}

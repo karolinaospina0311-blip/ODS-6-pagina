@@ -1,0 +1,128 @@
+/* EcoAgua · Panel administrativo. Usa las variables y componentes de /styles.css */
+
+body.admin{background:var(--paper); min-height:100vh; display:flex; flex-direction:column;}
+.admin-main{flex:1; padding:36px 0 64px;}
+.admin h1{font-size:clamp(1.6rem, 3vw, 2.1rem);}
+.admin h2{font-size:1.15rem; margin-bottom:14px;}
+
+.admin-links{display:flex; align-items:center; gap:22px; font-size:0.92rem; font-weight:500;}
+.admin-links a{text-decoration:none; color:var(--ink); opacity:0.75; padding:4px 0; border-bottom:2px solid transparent;}
+.admin-links a:hover{opacity:1;}
+.admin-links a[aria-current="page"]{opacity:1; border-color:var(--aqua); font-weight:600;}
+.logout-form{margin:0;}
+.logout-form button{font:inherit; background:none; border:1px solid var(--line); border-radius:999px; padding:6px 14px; cursor:pointer; color:var(--teal-deep); font-weight:600;}
+.logout-form button:hover{border-color:var(--teal);}
+@media (max-width:860px){
+  .admin .nav-inner{flex-wrap:wrap; gap:10px; padding:12px 16px;}
+  .admin-links{width:100%; overflow-x:auto; gap:16px; padding-bottom:4px; white-space:nowrap;}
+}
+
+.admin-head{display:flex; justify-content:space-between; align-items:flex-end; gap:16px; flex-wrap:wrap; margin-bottom:26px;}
+.admin-head p{opacity:0.75; margin-top:6px;}
+.actualizado{font-size:0.85rem; opacity:0.6;}
+.migas{font-size:0.9rem; margin-bottom:10px; opacity:0.75;}
+.migas a{color:var(--teal);}
+
+.aviso{padding:12px 16px; border-radius:12px; margin-bottom:20px; font-weight:600;}
+.aviso-ok{background:#E6F4EA; border:1px solid #B7DDC2; color:#1E5B31;}
+.aviso-error{background:#FBE7E4; border:1px solid #F1B9B1; color:#8E2419;}
+
+.login-card{max-width:420px; margin:40px auto; background:var(--white); border:1px solid var(--line); border-radius:22px; padding:36px;}
+.login-card p{opacity:0.75; margin:8px 0 24px;}
+
+.kpis{margin-bottom:28px;}
+.stat-num.est-pendiente{color:#B07A12;}
+.stat-num.est-en_proceso{color:var(--teal);}
+.stat-num.est-resuelto{color:var(--teal-deep);}
+
+.panel-card{background:var(--white); border:1px solid var(--line); border-radius:18px; padding:24px; min-width:0;}
+.graficas{display:grid; grid-template-columns:1fr 1.4fr; gap:22px;}
+.graficas .ancho{grid-column:1 / -1;}
+@media (max-width:900px){ .graficas{grid-template-columns:1fr;} }
+.grafica{position:relative; height:280px;}
+.grafica-dona{height:260px;}
+.grafica-alta{height:360px; margin-bottom:18px;}
+.nota{font-size:0.88rem; opacity:0.7; margin:-6px 0 14px;}
+.vacio{background:var(--white); border:1px dashed rgba(11,39,51,0.25); border-radius:18px; padding:40px 24px; text-align:center;}
+.vacio p{opacity:0.75; margin-top:8px;}
+.tenue{opacity:0.6; font-size:0.88rem;}
+.etq-prueba{display:inline-block; background:#FBF0DA; color:#6D4A0A; font-size:0.72rem; font-weight:700; padding:2px 8px; border-radius:6px; vertical-align:middle;}
+
+/* tablas */
+.tabla-scroll{overflow-x:auto; border:1px solid var(--line); border-radius:16px; background:var(--white);}
+.tabla{width:100%; border-collapse:collapse; font-size:0.9rem;}
+.tabla th{text-align:left; font-weight:600; font-size:0.82rem; color:var(--teal-deep); background:var(--paper-2); padding:12px 14px; white-space:nowrap;}
+.tabla td{padding:12px 14px; border-top:1px solid var(--line); vertical-align:top;}
+.tabla td.desc{min-width:200px; max-width:300px;}
+.tabla td.coords{white-space:nowrap; font-variant-numeric:tabular-nums;}
+.tabla a{color:var(--teal);}
+.num-seg{font-family:'Fraunces', serif; font-weight:600; color:var(--teal-deep) !important; text-decoration:none; white-space:nowrap;}
+.mini-foto{width:64px; height:64px; object-fit:cover; border-radius:10px; border:1px solid var(--line);}
+.sel-estado{font:inherit; font-size:0.85rem; font-weight:700; border-radius:999px; padding:6px 10px; border:1px solid var(--line); cursor:pointer;}
+.sel-estado.est-pendiente{background:#FBF0DA; color:#8A5D0C;}
+.sel-estado.est-en_proceso{background:var(--aqua-light); color:#06708F;}
+.sel-estado.est-resuelto{background:#DCEBF1; color:var(--teal-deep);}
+
+/* tabla como tarjetas en celular */
+@media (max-width:720px){
+  .tabla-scroll{border:none; background:none;}
+  .tabla thead{display:none;}
+  .tabla, .tabla tbody, .tabla tr, .tabla td{display:block; width:100%;}
+  .tabla tr{background:var(--white); border:1px solid var(--line); border-radius:16px; padding:8px 0; margin-bottom:14px;}
+  .tabla td{border:none; padding:6px 16px; display:grid; grid-template-columns:110px 1fr; gap:10px; max-width:none !important;}
+  .tabla td::before{content:attr(data-t); font-weight:600; font-size:0.8rem; opacity:0.65;}
+  .tabla td:not([data-t]){display:block;}
+  .tabla td:not([data-t])::before{content:none;}
+}
+
+/* filtros */
+.filtros{display:flex; gap:14px; align-items:flex-end; flex-wrap:wrap; margin-bottom:22px;}
+.filtros .campo{flex:1 1 200px;}
+.filtros .campo:first-child{flex:2 1 260px;}
+.filtros .btn{min-height:48px;}
+.check{display:inline-flex; align-items:center; gap:8px; font-size:0.9rem; min-height:48px; cursor:pointer;}
+.check input{width:18px; height:18px; accent-color:var(--teal);}
+.paginacion{display:flex; gap:14px; justify-content:center; align-items:center; margin-top:22px;}
+
+/* detalle */
+.detalle-grid{display:grid; grid-template-columns:1fr 1fr; gap:22px;}
+@media (max-width:900px){ .detalle-grid{grid-template-columns:1fr;} }
+.estados-radio{border:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(3,1fr); gap:10px;}
+@media (max-width:480px){ .estados-radio{grid-template-columns:1fr;} }
+.opcion-estado{position:relative; cursor:pointer;}
+.opcion-estado input{position:absolute; opacity:0;}
+.opcion-estado span{display:block; text-align:center; padding:12px 8px; border-radius:12px; border:2px solid var(--line); font-weight:700; background:var(--white);}
+.opcion-estado input:focus-visible + span{outline:2px solid var(--teal); outline-offset:2px;}
+.opcion-estado.est-pendiente input:checked + span{background:#FBF0DA; border-color:#E7B75F; color:#8A5D0C;}
+.opcion-estado.est-en_proceso input:checked + span{background:var(--aqua-light); border-color:var(--aqua); color:#06708F;}
+.opcion-estado.est-resuelto input:checked + span{background:#DCEBF1; border-color:var(--teal-deep); color:var(--teal-deep);}
+.sep{margin-top:30px; padding-top:22px; border-top:1px solid var(--line);}
+.historial{list-style:none; margin:0; padding:0; display:grid; gap:14px;}
+.historial li{display:flex; flex-wrap:wrap; gap:10px; align-items:baseline;}
+.historial li p{flex-basis:100%; margin:0; font-size:0.92rem;}
+.datos{display:grid; grid-template-columns:auto 1fr; gap:10px 18px; margin:0;}
+.datos dt{font-weight:600; font-size:0.88rem; opacity:0.7;}
+.datos dd{margin:0; overflow-wrap:anywhere;}
+.datos dd.pre{white-space:pre-line;}
+.foto-grande{width:100%; max-height:460px; object-fit:contain; border-radius:14px; background:var(--paper-2);}
+.mapa-detalle{height:300px;}
+
+/* mapa */
+.mapa-admin{height:calc(100vh - 290px); min-height:420px;}
+.mapa-controles{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:16px;}
+.chip{font:inherit; font-size:0.88rem; font-weight:600; display:inline-flex; align-items:center; gap:8px; border:1px solid var(--line); background:var(--white); color:var(--ink); padding:8px 14px; border-radius:999px; cursor:pointer;}
+.chip.activo{border-color:var(--teal-deep); background:var(--teal-deep); color:var(--white);}
+.chip .punto{width:10px; height:10px; border-radius:50%;}
+.chip.est-pendiente .punto{background:#E7B75F;}
+.chip.est-en_proceso .punto{background:#26BDE2;}
+.chip.est-resuelto .punto{background:#045A78;}
+.popup-eco{font-family:'Public Sans', sans-serif; display:grid; gap:6px; min-width:200px;}
+.popup-eco p{margin:0; font-size:0.85rem;}
+.popup-eco img{width:100%; max-height:150px; object-fit:cover; border-radius:8px;}
+.popup-eco .btn{color:var(--white) !important;}
+
+/* ancho del panel: más espacio para tablas en pantallas grandes */
+.admin .wrap, .admin .nav-inner{max-width:1360px;}
+.tabla td[data-t="Foto"]{width:72px;}
+.mini-foto{max-width:none; flex-shrink:0;}
+.tabla td[data-t="Contacto"]{overflow-wrap:anywhere; min-width:170px;}

@@ -1,0 +1,90 @@
+{% extends "admin/base.html" %}
+{% block titulo %}{{ r.numero_seguimiento }}{% endblock %}
+{% block cabeza %}<link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet/leaflet.css') }}">{% endblock %}
+{% block contenido %}
+<p class="migas"><a href="{{ url_for('admin.reportes') }}">Gestión de reportes</a> / {{ r.numero_seguimiento }}</p>
+<div class="admin-head">
+  <div>
+    <h1>{{ r.numero_seguimiento }} {% if r.es_prueba %}<span class="etq-prueba">Prueba</span>{% endif %}</h1>
+    <p>Recibido el {{ fmt_fecha(r.fecha_creacion) }} · Última actualización {{ fmt_fecha(r.fecha_actualizacion) }}</p>
+  </div>
+  <span class="pastilla est-{{ r.estado }}">{{ r.estado_texto }}</span>
+</div>
+
+<div class="detalle-grid">
+  <section class="panel-card">
+    <h2>Cambiar estado</h2>
+    <form method="post" action="{{ url_for('admin.reporte_cambiar_estado', reporte_id=r.id) }}" class="form-eco">
+      <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+      <fieldset class="estados-radio">
+        <legend class="sr-only">Nuevo estado</legend>
+        {% for k, v in ESTADOS.items() %}
+        <label class="opcion-estado est-{{ k }}">
+          <input type="radio" name="estado" value="{{ k }}" {% if r.estado == k %}checked{% endif %}>
+          <span>{{ v }}</span>
+        </label>
+        {% endfor %}
+      </fieldset>
+      <label class="campo">
+        <span>Nota para el ciudadano <em>(opcional, la verá al consultar su número)</em></span>
+        <textarea name="nota" rows="3" maxlength="500" placeholder="Ej.: Cuadrilla asignada, se atenderá en las próximas 24 horas."></textarea>
+      </label>
+      <button type="submit" class="btn btn-solid">Guardar estado</button>
+    </form>
+
+    <h2 class="sep">Historial</h2>
+    <ol class="historial">
+      {% for h in r.historial|reverse %}
+      <li>
+        <span class="pastilla pastilla-sm est-{{ h.estado_nuevo }}">{{ h.estado_nuevo_texto }}</span>
+        <span class="tenue">{{ fmt_fecha(h.fecha) }}{% if h.usuario %} · {{ h.usuario.nombre }}{% endif %}</span>
+        {% if h.nota %}<p>{{ h.nota }}</p>{% endif %}
+      </li>
+      {% endfor %}
+    </ol>
+  </section>
+
+  <section class="panel-card">
+    <h2>Datos del reporte</h2>
+    <dl class="datos">
+      <dt>Tipo de fuga</dt><dd>{{ r.tipo_fuga_texto }}</dd>
+      <dt>Descripción</dt><dd class="pre">{{ r.descripcion }}</dd>
+      <dt>Ciudadano</dt><dd>{{ r.nombre_ciudadano }}</dd>
+      <dt>Correo</dt><dd><a href="mailto:{{ r.correo }}">{{ r.correo }}</a></dd>
+      <dt>Teléfono</dt><dd>{% if r.telefono %}<a href="tel:{{ r.telefono }}">{{ r.telefono }}</a>{% else %}<span class="tenue">No indicado</span>{% endif %}</dd>
+      <dt>Barrio / sector</dt><dd>{{ r.barrio or '—' }}</dd>
+      <dt>Referencia</dt><dd>{{ r.direccion_referencia or '—' }}</dd>
+      <dt>Latitud</dt><dd>{{ r.latitud }}</dd>
+      <dt>Longitud</dt><dd>{{ r.longitud }}</dd>
+      <dt>Origen de la ubicación</dt><dd>{{ 'GPS del dispositivo' if r.origen_ubicacion == 'gps' else 'Marcada en el mapa' }}{% if r.precision_gps_m %} (precisión ±{{ r.precision_gps_m|round|int }} m){% endif %}</dd>
+    </dl>
+  </section>
+
+  <section class="panel-card">
+    <h2>Fotografía</h2>
+    {% if r.fotografia %}
+      <a href="{{ url_for('admin.foto', reporte_id=r.id) }}" target="_blank" rel="noopener"><img class="foto-grande" src="{{ url_for('admin.foto', reporte_id=r.id) }}" alt="Fotografía de la fuga {{ r.numero_seguimiento }}"></a>
+    {% else %}
+      <p class="tenue">Este reporte no tiene fotografía.</p>
+    {% endif %}
+  </section>
+
+  <section class="panel-card">
+    <h2>Ubicación</h2>
+    <div id="mapaDetalle" class="mapa mapa-detalle" data-lat="{{ r.latitud }}" data-lng="{{ r.longitud }}"></div>
+    <p class="nota"><a href="https://www.openstreetmap.org/?mlat={{ r.latitud }}&mlon={{ r.longitud }}#map=18/{{ r.latitud }}/{{ r.longitud }}" target="_blank" rel="noopener">Abrir en OpenStreetMap</a> · <a href="https://www.google.com/maps/search/?api=1&query={{ r.latitud }},{{ r.longitud }}" target="_blank" rel="noopener">Abrir en Google Maps</a></p>
+  </section>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='vendor/leaflet/leaflet.js') }}"></script>
+<script>
+(function(){
+  var el = document.getElementById('mapaDetalle');
+  var lat = parseFloat(el.dataset.lat), lng = parseFloat(el.dataset.lng);
+  var mapa = L.map(el, {scrollWheelZoom:false}).setView([lat, lng], 17);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 19, referrerPolicy: 'strict-origin-when-cross-origin', attribution: '&copy; OpenStreetMap'}).addTo(mapa);
+  L.marker([lat, lng]).addTo(mapa);
+})();
+</script>
+{% endblock %}

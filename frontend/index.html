@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EcoAgua · ODS 6 Agua limpia y saneamiento</title>
+<link rel="icon" href="/static/img/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" href="/static/img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="/static/vendor/leaflet/leaflet.css">
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="#"><img class="brand-logo" src="/static/img/logo-icono.png" alt="" width="32" height="32"> EcoAgua <span class="brand-sub">ODS 6</span></a>
+    <nav class="links">
+      <a href="#panorama">Panorama</a>
+      <a href="#metas">Metas</a>
+      <a href="#ods-global">Los 17 ODS</a>
+      <a href="#tiempo">Línea de tiempo</a>
+      <a href="#calculadora">Tu huella hídrica</a>
+      <a href="#accion">Actuar</a>
+      <a href="#consultar" class="link-consulta">Consultar reporte</a>
+    </nav>
+    <a href="#reportar" class="nav-cta">Reportar fuga</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <div class="kicker">Objetivo de Desarrollo Sostenible 6</div>
+      <h1>Agua limpia<br>y <em>saneamiento</em><br>para todos</h1>
+      <p class="lede">Garantizar la disponibilidad de agua y su gestión sostenible, y el saneamiento para todas las personas, en todos los lugares, antes de 2030.</p>
+      <div class="hero-cta">
+        <a href="#reportar" class="btn btn-report">Reportar una fuga</a>
+        <a href="#metas" class="btn btn-primary">Explorar las metas</a>
+        <a href="#calculadora" class="btn btn-ghost">Calcula tu consumo</a>
+      </div>
+    </div>
+    <div class="drop-figure">
+      <div>
+        <div class="glass"><div class="fill" id="heroFill" style="height:26%"></div></div>
+        <div class="glass-cap"><strong id="heroPct">26%</strong><br>de la población mundial no tiene acceso a servicios de agua potable gestionados de forma segura</div>
+      </div>
+    </div>
+  </div>
+  <div class="wave-divider">
+    <svg viewBox="0 0 1440 70" preserveAspectRatio="none">
+      <path d="M0,40 C240,90 480,0 720,30 C960,60 1200,10 1440,45 L1440,70 L0,70 Z" fill="#F5FAF9"></path>
+    </svg>
+  </div>
+</section>
+
+<!-- ===================== ECOAGUA: secciones agregadas ===================== -->
+
+<section class="section eco-intro" id="ecoagua">
+
+  <div class="wrap eco-intro-grid">
+
+    <div class="section-head reveal">
+
+      <h2>EcoAgua: reporta una fuga en minutos</h2>
+
+      <p>Una fuga de agua en la calle desperdicia miles de litros al día. EcoAgua conecta a la ciudadanía con la empresa de servicios públicos: tú avisas dónde está la fuga, con foto y ubicación, y la empresa la atiende y te mantiene informado.</p>
+
+      <p>No necesitas crear una cuenta. Solo guarda el número de seguimiento que te damos al final.</p>
+
+      <a href="#reportar" class="btn btn-solid">Reportar una fuga</a>
+
+    </div>
+
+    <ol class="eco-pasos reveal">
+
+      <li><h3>Toma una foto y marca el lugar</h3><p>Desde tu celular, en el sitio de la fuga. El GPS ubica el punto; si no funciona, lo marcas en el mapa.</p></li>
+
+      <li><h3>Recibe tu número de seguimiento</h3><p>Al enviar, obtienes un número como ECO-2026-00001 para consultar tu reporte cuando quieras.</p></li>
+
+      <li><h3>La empresa atiende la fuga</h3><p>Tu reporte pasa de Pendiente a En proceso y luego a Resuelto. Puedes ver cada cambio aquí mismo.</p></li>
+
+    </ol>
+
+  </div>
+
+</section>
+
+
+
+<section class="section reportar" id="reportar">
+
+  <div class="wrap">
+
+    <div class="section-head reveal">
+
+      <h2>Reportar una fuga de agua</h2>
+
+      <p>Completa los tres pasos. Los campos marcados como opcionales puedes dejarlos vacíos.</p>
+
+    </div>
+
+
+
+    <div class="reporte-card">
+
+      <div class="aviso-servidor" id="avisoServidor" hidden>El formulario no puede conectarse con el servidor de EcoAgua. Si abriste este archivo directamente, inicia el servidor (ver README) y entra por su dirección, por ejemplo http://127.0.0.1:5000.</div>
+
+
+
+      <form id="formReporte" class="reporte-grid" novalidate>
+
+        <fieldset class="paso-form">
+
+          <legend><span class="n">1</span> La fuga</legend>
+
+
+
+          <div class="campo" data-campo="foto">
+
+            <span id="fotoTitulo">Fotografía de la fuga</span>
+
+            <div class="foto-zona">
+
+              <div class="foto-botones">
+
+                <label class="btn btn-solid solo-tactil" for="fotoCamara">Tomar foto</label>
+
+                <label class="btn btn-linea" for="fotoArchivo" id="fotoArchivoLabel">Elegir fotografía</label>
+
+              </div>
+
+              <input class="oculto" type="file" id="fotoCamara" accept="image/*" capture="environment" aria-labelledby="fotoTitulo">
+
+              <input class="oculto" type="file" id="fotoArchivo" accept="image/jpeg,image/png,image/webp,image/*" aria-labelledby="fotoTitulo">
+
+              <div class="foto-preview" id="fotoPreview">
+
+                <img id="fotoImg" alt="Vista previa de la fotografía">
+
+                <div class="info"><div id="fotoInfo"></div><button type="button" id="fotoQuitar">Quitar foto</button></div>
+
+              </div>
+
+              <div class="ayuda" id="fotoAyuda">JPG, PNG o WEBP.</div>
+
+            </div>
+
+            <div class="error-campo" data-error="foto"></div>
+
+          </div>
+
+
+
+          <label class="campo" data-campo="tipo_fuga">
+
+            <span>Tipo de fuga</span>
+
+            <select name="tipo_fuga" id="tipoFuga" required>
+
+              <option value="">Selecciona una opción</option>
+
+            </select>
+
+            <span class="error-campo" data-error="tipo_fuga"></span>
+
+          </label>
+
+
+
+          <label class="campo" data-campo="descripcion">
+
+            <span>Describe lo que ves</span>
+
+            <textarea name="descripcion" rows="4" maxlength="2000" required placeholder="Ej.: Sale agua a presión de un tubo roto frente a la tienda, desde hace dos días."></textarea>
+
+            <span class="error-campo" data-error="descripcion"></span>
+
+          </label>
+
+        </fieldset>
+
+
+
+        <fieldset class="paso-form">
+
+          <legend><span class="n">2</span> Dónde está</legend>
+
+          <button type="button" class="btn btn-solid gps-btn" id="btnGps">Usar mi ubicación actual (GPS)</button>
+
+          <div class="gps-estado" id="gpsEstado" role="status" aria-live="polite"></div>
+
+          <div class="campo" data-campo="ubicacion">
+
+            <span>Seleccionar ubicación en el mapa</span>
+
+            <div id="mapaReporte" class="mapa mapa-reporte" aria-label="Mapa para marcar la ubicación de la fuga"></div>
+
+            <span class="coords-texto" id="coordsTexto">Toca el mapa para marcar el punto exacto. Puedes arrastrar el marcador para corregirlo.</span>
+
+            <span class="error-campo" data-error="ubicacion"></span>
+
+          </div>
+
+          <input type="hidden" name="latitud" id="latitud">
+
+          <input type="hidden" name="longitud" id="longitud">
+
+          <input type="hidden" name="origen_ubicacion" id="origenUbicacion" value="mapa">
+
+          <input type="hidden" name="precision_gps" id="precisionGps">
+
+          <div class="fila-2">
+
+            <label class="campo">
+
+              <span>Barrio o sector <em>(opcional)</em></span>
+
+              <input type="text" name="barrio" maxlength="120" autocomplete="address-level3">
+
+            </label>
+
+            <label class="campo">
+
+              <span>Punto de referencia <em>(opcional)</em></span>
+
+              <input type="text" name="direccion" maxlength="255" autocomplete="street-address" placeholder="Ej.: Calle 30 con carrera 5">
+
+            </label>
+
+          </div>
+
+        </fieldset>
+
+
+
+        <fieldset class="paso-form paso-datos">
+
+          <legend><span class="n">3</span> Tus datos</legend>
+
+          <div class="campos-datos">
+
+            <label class="campo" data-campo="nombre">
+
+              <span>Nombre completo</span>
+
+              <input type="text" name="nombre" maxlength="120" autocomplete="name" required>
+
+              <span class="error-campo" data-error="nombre"></span>
+
+            </label>
+
+            <label class="campo" data-campo="correo">
+
+              <span>Correo electrónico</span>
+
+              <input type="email" name="correo" maxlength="254" autocomplete="email" inputmode="email" required>
+
+              <span class="error-campo" data-error="correo"></span>
+
+            </label>
+
+            <label class="campo" data-campo="telefono">
+
+              <span>Teléfono <em>(opcional)</em></span>
+
+              <input type="tel" name="telefono" maxlength="30" autocomplete="tel" inputmode="tel">
+
+              <span class="error-campo" data-error="telefono"></span>
+
+            </label>
+
+          </div>
+
+          <p class="ayuda">Tus datos de contacto solo los ve la empresa de servicios públicos. No se muestran al consultar el estado del reporte.</p>
+
+        </fieldset>
+
+
+
+        <div class="trampa" aria-hidden="true"><label>No llenar <input type="text" name="sitio_web" tabindex="-1" autocomplete="off"></label></div>
+
+        <div class="error-general" id="errorGeneral" role="alert"></div>
+
+        <div class="enviar-fila">
+
+          <button type="submit" class="btn btn-solid" id="btnEnviar">Enviar reporte</button>
+
+        </div>
+
+      </form>
+
+
+
+      <div class="confirmacion" id="confirmacion" tabindex="-1">
+
+        <div class="check-ok"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg></div>
+
+        <h3>Reporte registrado correctamente.</h3>
+
+        <p>Tu número de seguimiento es:</p>
+
+        <div class="num-grande" id="numConfirmado"></div>
+
+        <p>Guarda este número para consultar el estado de tu reporte.</p>
+
+        <div class="acciones">
+
+          <button type="button" class="btn btn-solid" id="btnCopiar">Copiar número</button>
+
+          <a class="btn btn-linea" href="#consultar" id="btnVerEstado">Consultar estado</a>
+
+          <button type="button" class="btn btn-linea" id="btnOtro">Hacer otro reporte</button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<section class="section consultar" id="consultar">
+
+  <div class="wrap">
+
+    <div class="section-head reveal">
+
+      <h2>Consulta el estado de tu reporte</h2>
+
+      <p>Escribe el número de seguimiento que recibiste al enviar tu reporte.</p>
+
+    </div>
+
+    <form class="consulta-form" id="formConsulta" novalidate>
+
+      <label class="campo">
+
+        <span>Número de seguimiento</span>
+
+        <input type="text" id="numConsulta" placeholder="ECO-2026-00001" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="20" required>
+
+      </label>
+
+      <button type="submit" class="btn btn-solid" id="btnConsultar">Consultar estado</button>
+
+    </form>
+
+    <div class="mis-reportes" id="misReportes"></div>
+
+    <div class="consulta-msg" id="consultaMsg" role="alert"></div>
+
+
+
+    <div class="resultado" id="resultado" aria-live="polite">
+
+      <div class="resultado-cabeza">
+
+        <div>
+
+          <div class="num" id="resNumero"></div>
+
+          <div class="ayuda" id="resFechas"></div>
+
+        </div>
+
+        <span class="pastilla" id="resEstado"></span>
+
+      </div>
+
+      <div class="progreso" id="resProgreso">
+
+        <div data-estado="pendiente">Pendiente</div>
+
+        <div data-estado="en_proceso">En proceso</div>
+
+        <div data-estado="resuelto">Resuelto</div>
+
+      </div>
+
+      <div class="resultado-grid">
+
+        <dl>
+
+          <dt>Tipo de fuga</dt><dd id="resTipo"></dd>
+
+          <dt>Descripción</dt><dd id="resDesc"></dd>
+
+          <dt>Ubicación</dt><dd id="resUbic"></dd>
+
+        </dl>
+
+        <div>
+
+          <img class="foto-res" id="resFoto" alt="Fotografía del reporte" hidden>
+
+          <div class="mapa mapa-res" id="resMapa"></div>
+
+        </div>
+
+      </div>
+
+      <ol class="historial-pub" id="resHistorial"></ol>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- =================== fin secciones EcoAgua =================== -->
+
+
+
+<section class="stats" id="panorama">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <h2>La brecha del agua, en cifras</h2>
+      <p>Aunque el acceso al agua ha mejorado en las últimas décadas, cientos de millones de personas siguen sin servicios básicos de agua y saneamiento.</p>
+    </div>
+    <div class="stats-grid reveal">
+      <div class="stat-cell">
+        <div class="stat-num" data-target="2200" data-suffix="M">0</div>
+        <div class="stat-label">personas viven sin acceso a agua potable gestionada de forma segura</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num" data-target="3500" data-suffix="M">0</div>
+        <div class="stat-label">personas carecen de servicios de saneamiento seguros</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num" data-target="80" data-suffix="%">0</div>
+        <div class="stat-label">de las aguas residuales del mundo se vierte sin tratar a los ecosistemas</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num" data-target="10" data-suffix="%">0</div>
+        <div class="stat-label">del uso mundial de agua dulce corresponde al consumo doméstico</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section metas" id="metas">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <h2>Ocho metas, un mismo objetivo</h2>
+      <p>El ODS 6 se compone de ocho metas que abarcan desde el acceso al agua potable hasta la protección de los ecosistemas hídricos. Selecciona una para leer su alcance.</p>
+    </div>
+
+    <div class="metas-layout reveal">
+      <div class="meta-tabs" id="metaTabs" role="tablist" aria-label="Metas del ODS 6"></div>
+      <div class="meta-panel" id="metaPanel"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section ods-global" id="ods-global">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <h2>El agua conecta los 17 objetivos</h2>
+      <p>El ODS 6 no existe de forma aislada: la disponibilidad de agua influye — y es influida — por los otros 16 Objetivos de Desarrollo Sostenible. Toca cualquier objetivo para ver su relación con el agua.</p>
+    </div>
+
+    <div class="reveal">
+      <div class="ods-grid" id="odsGrid"></div>
+      <div class="ods-detail" id="odsDetail"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section timeline" id="tiempo">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <h2>Cómo llegamos hasta aquí</h2>
+      <p>El reconocimiento del agua como prioridad global es un proceso de décadas. Toca cada hito para leer más.</p>
+    </div>
+    <div class="timeline-list reveal" id="timelineList"></div>
+  </div>
+</section>
+
+<section class="section calc" id="calculadora">
+  <div class="wrap reveal">
+    <div class="calc-card">
+      <div>
+        <h2>¿Cuánta agua usas al día?</h2>
+        <p>Mueve los controles para estimar tu consumo diario aproximado y compararlo con el promedio recomendado por persona.</p>
+
+        <div class="calc-controls">
+          <div class="calc-row">
+            <label>Minutos de ducha <span class="val" id="showerVal">8 min</span></label>
+            <input type="range" id="shower" min="1" max="30" value="8">
+          </div>
+          <div class="calc-row">
+            <label>Descargas del inodoro al día <span class="val" id="toiletVal">5</span></label>
+            <input type="range" id="toilet" min="0" max="12" value="5">
+          </div>
+          <div class="calc-row">
+            <label>Cargas de lavadora por semana <span class="val" id="washVal">3</span></label>
+            <input type="range" id="wash" min="0" max="14" value="3">
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="calc-result">
+          <div class="big" id="litersOut">148</div>
+          <div class="unit">litros de agua estimados al día</div>
+        </div>
+        <div class="calc-note" id="calcNote">Cálculo aproximado con fines educativos, basado en promedios de consumo doméstico.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="accion">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <h2>Qué puedes hacer</h2>
+      <p>Pequeñas decisiones cotidianas, sumadas a nivel colectivo, contribuyen a cerrar la brecha del agua. Toca cada tarjeta para ver una acción concreta.</p>
+    </div>
+    <div class="acciones-grid reveal" id="accionesGrid"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div><strong>EcoAgua</strong> · ODS 6 · Agua limpia y saneamiento</div>
+    <div>Basado en la Agenda 2030 para el Desarrollo Sostenible · Página educativa · <a href="/admin/login">Acceso empresa</a></div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+<script src="/static/vendor/leaflet/leaflet.js"></script>
+<script src="reportes.js"></script>
+
+</body>
+</html>

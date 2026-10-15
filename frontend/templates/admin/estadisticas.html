@@ -1,0 +1,55 @@
+{% extends "admin/base.html" %}
+{% block titulo %}Estadísticas{% endblock %}
+{% block contenido %}
+<div class="admin-head">
+  <div>
+    <h1>Estadísticas</h1>
+    <p>Datos calculados en tiempo real desde la base de datos. Se actualizan solos cada minuto.</p>
+  </div>
+  <span class="actualizado" id="actualizado"></span>
+</div>
+
+<div class="stats-grid kpis">
+  <div class="stat-cell"><div class="stat-num" id="kpiTotal">{{ stats.total }}</div><div class="stat-label">reportes registrados en total</div></div>
+  <div class="stat-cell"><div class="stat-num est-pendiente" id="kpiPendiente">{{ stats.pendiente }}</div><div class="stat-label">pendientes por atender</div></div>
+  <div class="stat-cell"><div class="stat-num est-en_proceso" id="kpiProceso">{{ stats.en_proceso }}</div><div class="stat-label">en proceso de atención</div></div>
+  <div class="stat-cell"><div class="stat-num est-resuelto" id="kpiResuelto">{{ stats.resuelto }}</div><div class="stat-label">resueltos</div></div>
+</div>
+
+<div id="vacio" class="vacio" {% if stats.total %}hidden{% endif %}>
+  <h2>Todavía no hay reportes</h2>
+  <p>Cuando un ciudadano envíe un reporte desde el sitio público, las gráficas aparecerán aquí.</p>
+</div>
+
+<div id="graficas" class="graficas" {% if not stats.total %}hidden{% endif %}>
+  <section class="panel-card">
+    <h2>Reportes por estado</h2>
+    <div class="grafica grafica-dona"><canvas id="gEstado" aria-label="Reportes por estado" role="img"></canvas></div>
+  </section>
+  <section class="panel-card">
+    <h2>Evolución de reportes (últimos {{ stats.dias }} días)</h2>
+    <div class="grafica"><canvas id="gEvolucion" aria-label="Reportes por día" role="img"></canvas></div>
+  </section>
+  <section class="panel-card ancho">
+    <h2>Zonas con mayor número de fugas</h2>
+    <p class="nota">Los reportes cercanos entre sí (a menos de unos 700 m) se agrupan en una misma zona según sus coordenadas GPS. Cada zona toma el nombre del barrio que más indicaron los ciudadanos en ella; si nadie lo indicó, se muestran sus coordenadas.</p>
+    <div class="grafica grafica-alta"><canvas id="gZonas" aria-label="Reportes por zona" role="img"></canvas></div>
+    <div class="tabla-scroll">
+      <table class="tabla">
+        <thead><tr><th>Zona</th><th>Total</th><th>Pendientes</th><th>En proceso</th><th>Resueltos</th><th>Centro</th></tr></thead>
+        <tbody id="tablaZonas"></tbody>
+      </table>
+    </div>
+  </section>
+  <section class="panel-card ancho">
+    <h2>Reportes por tipo de fuga</h2>
+    <div class="grafica"><canvas id="gTipo" aria-label="Reportes por tipo" role="img"></canvas></div>
+  </section>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='vendor/chartjs/chart.umd.js') }}"></script>
+<script id="datosIniciales" type="application/json">{{ stats | tojson }}</script>
+<script>window.ECO_API = {{ url_for('admin.api_estadisticas') | tojson }}; window.ECO_MAPA = {{ url_for('admin.mapa') | tojson }};</script>
+<script src="{{ url_for('static', filename='admin-estadisticas.js') }}"></script>
+{% endblock %}

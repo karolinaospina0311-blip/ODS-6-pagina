@@ -629,3 +629,327 @@
     outline:2px solid var(--teal);
     outline-offset:3px;
   }
+
+/* =====================================================================
+   ECOAGUA · Reporte de fugas y seguimiento
+   Bloque agregado. Reutiliza las variables, tipografías y radios del
+   diseño existente. No modifica ninguna regla anterior.
+   ===================================================================== */
+
+  [hidden]{display:none !important;}
+  #ecoagua, #reportar, #consultar, #resultado, #confirmacion{scroll-margin-top:72px;}
+  .brand{text-decoration:none;}
+  .brand .brand-sub{
+    font-family:'Public Sans', sans-serif;
+    font-size:0.78rem;
+    font-weight:600;
+    color:var(--teal);
+    background:var(--aqua-light);
+    padding:2px 8px;
+    border-radius:999px;
+  }
+  .nav-cta{
+    display:inline-flex;
+    align-items:center;
+    padding:9px 16px;
+    border-radius:999px;
+    background:var(--teal-deep);
+    color:var(--white);
+    font-weight:600;
+    font-size:0.88rem;
+    text-decoration:none;
+    white-space:nowrap;
+    transition:background .2s ease;
+  }
+  .nav-cta:hover{background:var(--teal);}
+  nav.links a.link-consulta{white-space:nowrap;}
+  @media (max-width:1100px) and (min-width:721px){
+    nav.links{gap:16px; font-size:0.86rem; white-space:nowrap;}
+    nav.links a.link-consulta{display:none;}
+    .brand .brand-sub{display:none;}
+  }
+  @media (max-width:960px) and (min-width:721px){
+    .nav-inner{gap:16px;}
+    nav.links{flex:1; min-width:0; overflow-x:auto; scrollbar-width:none; justify-content:flex-start;}
+    nav.links::-webkit-scrollbar{display:none;}
+  }
+  .btn-report{
+    background:var(--white);
+    color:var(--teal-deep);
+  }
+  .btn-report:hover{background:var(--aqua-light);}
+  .btn-solid{
+    background:var(--teal-deep);
+    color:var(--white);
+    justify-content:center;
+  }
+  .btn-solid:hover{background:var(--teal);}
+  .btn-solid[disabled]{opacity:0.6; cursor:wait;}
+  .btn-linea{
+    background:var(--white);
+    color:var(--teal-deep);
+    border-color:var(--line);
+  }
+  .btn-linea:hover{border-color:var(--teal);}
+  .btn-sm{padding:7px 14px; font-size:0.85rem;}
+
+  .sr-only{
+    position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+    overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
+  }
+
+  /* ---------- Campos de formulario ---------- */
+  .form-eco{display:flex; flex-direction:column; gap:18px;}
+  .campo{display:flex; flex-direction:column; gap:6px;}
+  .campo > span{font-weight:600; font-size:0.95rem;}
+  .campo > span em{font-style:normal; font-weight:400; opacity:0.7;}
+  .campo input, .campo select, .campo textarea{
+    font:inherit;
+    font-size:1rem;           /* 16px evita el zoom automático en iOS */
+    color:var(--ink);
+    background:var(--white);
+    border:1.5px solid rgba(11,39,51,0.22);
+    border-radius:12px;
+    padding:12px 14px;
+    width:100%;
+    min-height:48px;
+    transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  .campo textarea{resize:vertical; min-height:110px;}
+  .campo input:focus, .campo select:focus, .campo textarea:focus{
+    outline:none;
+    border-color:var(--teal);
+    box-shadow:0 0 0 3px rgba(38,189,226,0.25);
+  }
+  .campo.invalido input, .campo.invalido select, .campo.invalido textarea{border-color:#C0392B;}
+  .error-campo{color:#B03022; font-size:0.88rem; font-weight:600;}
+  .error-campo:empty{display:none;}
+  .ayuda{font-size:0.86rem; opacity:0.72;}
+  .fila-2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  @media (max-width:640px){ .fila-2{grid-template-columns:1fr;} }
+
+  /* ---------- Estados ---------- */
+  .pastilla{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:6px 14px; border-radius:999px;
+    font-weight:700; font-size:0.9rem;
+    background:var(--paper-2); color:var(--teal-deep);
+  }
+  .pastilla::before{content:""; width:9px; height:9px; border-radius:50%; background:currentColor;}
+  .pastilla-sm{padding:3px 10px; font-size:0.78rem;}
+  .pastilla.est-pendiente{background:#FBF0DA; color:#8A5D0C;}
+  .pastilla.est-en_proceso{background:var(--aqua-light); color:#06708F;}
+  .pastilla.est-resuelto{background:#DCEBF1; color:var(--teal-deep);}
+
+  /* ---------- Qué es EcoAgua ---------- */
+  .eco-intro{background:var(--paper);}
+  .eco-intro-grid{
+    display:grid;
+    grid-template-columns:1fr 1.1fr;
+    gap:48px;
+    align-items:start;
+  }
+  @media (max-width:860px){ .eco-intro-grid{grid-template-columns:1fr; gap:28px;} }
+  .eco-intro .section-head{margin-bottom:0;}
+  .eco-intro .section-head .btn{margin-top:24px;}
+  .eco-pasos{list-style:none; margin:0; padding:0; counter-reset:paso; display:grid; gap:14px;}
+  .eco-pasos li{
+    counter-increment:paso;
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:20px 22px 20px 68px;
+    position:relative;
+  }
+  .eco-pasos li::before{
+    content:counter(paso);
+    position:absolute; left:20px; top:18px;
+    width:32px; height:32px; border-radius:50%;
+    background:var(--aqua-light); color:var(--teal-deep);
+    font-family:'Fraunces', serif; font-weight:600;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .eco-pasos h3{font-size:1.05rem; margin-bottom:4px;}
+  .eco-pasos p{font-size:0.94rem; opacity:0.8;}
+
+  /* ---------- Reportar una fuga ---------- */
+  .reportar{background:var(--paper-2);}
+  .reporte-card{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:22px;
+    padding:36px;
+  }
+  @media (max-width:640px){
+    .reportar .wrap{padding:0 14px;}
+    .reporte-card{padding:22px 18px; border-radius:18px;}
+  }
+  .reporte-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:28px 40px;
+  }
+  @media (max-width:900px){ .reporte-grid{grid-template-columns:1fr;} }
+  .paso-form{border:none; margin:0; padding:0; min-width:0; display:flex; flex-direction:column; gap:18px;}
+  .paso-form legend{
+    font-family:'Fraunces', serif; font-weight:600;
+    font-size:1.3rem; color:var(--teal-deep);
+    padding:0; margin-bottom:4px;
+    display:flex; align-items:center; gap:12px;
+  }
+  .paso-form legend .n{
+    width:30px; height:30px; border-radius:50%;
+    background:var(--teal-deep); color:var(--white);
+    font-size:0.95rem;
+    display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .paso-datos{grid-column:1 / -1; border-top:1px solid var(--line); padding-top:26px;}
+  .paso-datos .campos-datos{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
+  @media (max-width:900px){ .paso-datos .campos-datos{grid-template-columns:1fr;} }
+
+  /* foto */
+  .foto-zona{
+    border:2px dashed rgba(11,39,51,0.22);
+    border-radius:16px;
+    padding:18px;
+    background:var(--paper);
+    display:flex; flex-direction:column; gap:12px; align-items:stretch;
+  }
+  .campo.invalido .foto-zona{border-color:#C0392B;}
+  .foto-botones{display:flex; gap:10px; flex-wrap:wrap;}
+  .foto-botones .btn{flex:1 1 160px; justify-content:center; min-height:48px;}
+  .solo-tactil{display:none !important;}
+  @media (pointer:coarse){ .solo-tactil{display:inline-flex !important;} }
+  .foto-preview{display:none; gap:12px; align-items:center;}
+  .foto-preview.visible{display:flex;}
+  .foto-preview img{width:96px; height:96px; object-fit:cover; border-radius:12px; border:1px solid var(--line);}
+  .foto-preview .info{font-size:0.9rem; flex:1; min-width:0; overflow-wrap:anywhere;}
+  .foto-preview button{background:none; border:none; color:var(--teal); font-weight:600; cursor:pointer; padding:6px 0; font:inherit; font-size:0.88rem;}
+  input.oculto{position:absolute; opacity:0; width:1px; height:1px; pointer-events:none;}
+
+  /* ubicación */
+  .gps-btn{width:100%; justify-content:center; min-height:52px; font-size:1rem;}
+  .gps-estado{
+    font-size:0.92rem;
+    padding:10px 14px;
+    border-radius:12px;
+    background:var(--paper);
+    border:1px solid var(--line);
+  }
+  .gps-estado:empty{display:none;}
+  .gps-estado.ok{background:#E6F4EA; border-color:#B7DDC2; color:#1E5B31;}
+  .gps-estado.aviso{background:#FBF0DA; border-color:#EFD39B; color:#6D4A0A;}
+  .mapa{width:100%; border-radius:16px; border:1px solid var(--line); z-index:0; background:var(--paper-2);}
+  .mapa-reporte{height:320px;}
+  @media (max-width:640px){ .mapa-reporte{height:280px;} }
+  .campo.invalido .mapa{border-color:#C0392B; border-width:2px;}
+  .coords-texto{font-size:0.86rem; opacity:0.75; font-variant-numeric:tabular-nums;}
+
+  .enviar-fila{
+    grid-column:1 / -1;
+    display:flex; align-items:center; gap:18px; flex-wrap:wrap;
+  }
+  .enviar-fila .btn{min-height:54px; padding:14px 30px; font-size:1.02rem;}
+  @media (max-width:640px){ .enviar-fila .btn{width:100%;} }
+  .error-general{
+    grid-column:1 / -1;
+    background:#FBE7E4; border:1px solid #F1B9B1; color:#8E2419;
+    border-radius:12px; padding:12px 16px; font-weight:600;
+  }
+  .error-general:empty{display:none;}
+  .aviso-servidor{
+    background:#FBF0DA; border:1px solid #EFD39B; color:#6D4A0A;
+    border-radius:12px; padding:14px 16px; margin-bottom:20px; font-size:0.95rem;
+  }
+  .trampa{position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden;}
+
+  /* confirmación */
+  .confirmacion{text-align:center; padding:18px 0; display:none;}
+  .confirmacion.visible{display:block;}
+  .confirmacion .check-ok{
+    width:64px; height:64px; margin:0 auto 18px; border-radius:50%;
+    background:var(--aqua-light); color:var(--teal-deep);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .confirmacion h3{font-size:1.6rem; margin-bottom:10px;}
+  .confirmacion .num-grande{
+    font-family:'Fraunces', serif; font-weight:700;
+    font-size:clamp(1.7rem, 7vw, 2.6rem);
+    color:var(--teal-deep);
+    background:var(--paper-2);
+    border:2px dashed var(--aqua);
+    border-radius:16px;
+    display:inline-block;
+    padding:12px 24px;
+    margin:14px 0;
+    letter-spacing:0.02em;
+    user-select:all;
+  }
+  .confirmacion p{max-width:46ch; margin:0 auto; opacity:0.85;}
+  .confirmacion .acciones{display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:24px;}
+
+  /* ---------- Consultar estado ---------- */
+  .consultar{background:var(--white);}
+  .consulta-form{
+    display:flex; gap:12px; align-items:flex-end; flex-wrap:wrap;
+    max-width:640px;
+  }
+  .consulta-form .campo{flex:1 1 260px;}
+  .consulta-form .campo input{text-transform:uppercase; font-family:'Fraunces', serif; font-size:1.15rem; letter-spacing:0.03em;}
+  .consulta-form .btn{min-height:48px;}
+  @media (max-width:640px){ .consulta-form .btn{width:100%; justify-content:center;} }
+  .mis-reportes{margin-top:14px; font-size:0.9rem; display:flex; gap:8px; flex-wrap:wrap; align-items:center;}
+  .mis-reportes:empty{display:none;}
+  .mis-reportes button{
+    font:inherit; font-size:0.86rem; font-weight:600;
+    background:var(--paper-2); color:var(--teal-deep);
+    border:1px solid var(--line); border-radius:999px;
+    padding:5px 12px; cursor:pointer;
+  }
+  .consulta-msg{margin-top:16px; font-weight:600; color:#8E2419;}
+  .consulta-msg:empty{display:none;}
+  .resultado{
+    margin-top:28px;
+    border:1px solid var(--line);
+    border-radius:22px;
+    background:var(--paper);
+    padding:30px;
+    display:none;
+  }
+  .resultado.visible{display:block;}
+  @media (max-width:640px){ .resultado{padding:20px 16px;} }
+  .resultado-cabeza{
+    display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap;
+    padding-bottom:20px; border-bottom:1px solid var(--line); margin-bottom:22px;
+  }
+  .resultado-cabeza .num{font-family:'Fraunces', serif; font-size:1.5rem; font-weight:600; color:var(--teal-deep);}
+  .resultado-cabeza .pastilla{font-size:1rem; padding:8px 18px;}
+  .progreso{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:6px; margin-bottom:26px;
+  }
+  .progreso div{
+    border-top:5px solid var(--line);
+    padding-top:8px; font-size:0.86rem; font-weight:600; opacity:0.5;
+  }
+  .progreso div.hecho{border-color:var(--teal); opacity:1;}
+  .progreso div.actual{border-color:var(--teal-deep); opacity:1; color:var(--teal-deep);}
+  .resultado-grid{display:grid; grid-template-columns:1.1fr 1fr; gap:28px;}
+  @media (max-width:780px){ .resultado-grid{grid-template-columns:1fr;} }
+  .resultado dl{display:grid; grid-template-columns:auto 1fr; gap:10px 18px; margin:0;}
+  .resultado dt{font-weight:600; font-size:0.9rem; opacity:0.7;}
+  .resultado dd{margin:0; overflow-wrap:anywhere; white-space:pre-line;}
+  @media (max-width:480px){
+    .resultado dl{grid-template-columns:1fr; gap:2px;}
+    .resultado dd{margin-bottom:10px;}
+  }
+  .resultado .foto-res{border-radius:14px; border:1px solid var(--line); max-height:280px; width:100%; object-fit:cover;}
+  .resultado .mapa-res{height:220px; margin-top:14px;}
+  .historial-pub{list-style:none; margin:24px 0 0; padding:18px 0 0; border-top:1px solid var(--line); display:grid; gap:12px;}
+  .historial-pub li{display:flex; gap:12px; flex-wrap:wrap; align-items:baseline; font-size:0.92rem;}
+  .historial-pub li p{flex-basis:100%; margin:0; opacity:0.85;}
+
+  footer a{color:var(--white);}
+
+
+  /* Logo EcoAgua en la barra de navegación */
+.brand .brand-logo{width:32px;height:32px;object-fit:contain;flex-shrink:0;display:block;}

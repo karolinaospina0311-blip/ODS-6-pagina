@@ -1,0 +1,19 @@
+# Entorno y secretos (NUNCA se suben)
+.env
+instance/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Antiguas fotos en disco (ahora se guardan en la base de datos)
+uploads/
+
+# Sistema / editores
+.DS_Store
+Thumbs.db
+.vscode/
+
+# Nota: database/ecoagua.db SÍ se sube (es la base de ejemplo que pide la guía).
