@@ -34,9 +34,8 @@ EcoAgua permite que la ciudadanía reporte fugas de agua en la vía pública con
 
 | Nombre | Rol en el proyecto |
 |---|---|
-| Karolina García | *(completar)* |
-| *(completar)* | *(completar)* |
-| *(completar)* | *(completar)* |
+| Karolina García | Desarrollo backend, base de datos y despliegue en Render |
+| Joey Vergara | Diseño en Figma, desarrollo frontend y documentación|
 
 ## 3. Tecnologías utilizadas
 
