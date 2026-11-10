@@ -2,8 +2,8 @@
 
 **ODS abordado:** ODS 6 — Agua limpia y saneamiento (meta 6.4: uso eficiente de los recursos hídricos).
 
-🌐 **Aplicación desplegada:** `https://ecoagua.onrender.com` *(reemplazar por el enlace de Render)*
-📁 **Repositorio:** https://github.com/karolinaospina0311-blip/ODS-6-pagina
+ **Aplicación desplegada:** `https://ecoagua.onrender.com` *(reemplazar por el enlace de Render)*
+ **Repositorio:** https://github.com/karolinaospina0311-blip/ODS-6-pagina
 
 ## 1. Descripción de la solución
 
@@ -119,6 +119,7 @@ Luego abrir http://127.0.0.1:5000 (sitio público) y http://127.0.0.1:5000/admin
 | `flask --app backend/app sembrar` | Crea los usuarios de prueba y datos de ejemplo definidos en variables de entorno |
 | `flask --app backend/app datos-ejemplo` | Crea 30 reportes de ejemplo en barrios de Montería |
 | `flask --app backend/app borrar-datos-prueba` | Borra solo los reportes marcados como prueba/ejemplo |
+| `flask --app backend/app bot-telegram` | Inicia el bot de Telegram para recepción y consulta de reportes |
 | `python tests/prueba_flujo.py` | Prueba automática (86 comprobaciones, usa una base temporal) |
 
 ## 6. Variables de entorno
@@ -138,6 +139,7 @@ Ver `.env.example`. En Render se configuran en *Environment*; nunca se escriben 
 | `ECOAGUA_PROXY` | `1` detrás del proxy HTTPS de Render | `0` |
 | `ECOAGUA_COOKIE_SEGURA` | `1` cuando el sitio usa HTTPS | `0` |
 | `ECOAGUA_ZONA_HORARIA` | Zona horaria de las fechas | `America/Bogota` |
+| `TELEGRAM_BOT_TOKEN` | Token del bot de Telegram entregado por @BotFather | — |
 
 ## 7. Despliegue en Render
 

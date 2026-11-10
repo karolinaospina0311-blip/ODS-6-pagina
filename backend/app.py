@@ -225,6 +225,12 @@ def registrar_comandos(app):
             raise click.ClickException(str(e))
         click.echo(f"Usuario «{usuario.strip().lower()}» ({ROLES[rol]}) {accion}.")
 
+    @app.cli.command("bot-telegram")
+    def bot_telegram_cmd():
+        """Inicia el bot de Telegram de EcoAgua en modo polling."""
+        from bot_telegram import iniciar_bot
+        iniciar_bot()
+
     @app.cli.command("sembrar")
     def sembrar():
         """Crea los usuarios de prueba y los datos de ejemplo definidos en variables de entorno.

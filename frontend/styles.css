@@ -678,6 +678,44 @@
     color:var(--teal-deep);
   }
   .btn-report:hover{background:var(--aqua-light);}
+  .btn-telegram{
+    background:#229ED9;
+    color:var(--white);
+    border:1px solid #229ED9;
+  }
+  .btn-telegram:hover{
+    background:#1b87ba;
+    border-color:#1b87ba;
+    color:var(--white);
+  }
+  .aviso-telegram{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    background:#EBF7FC;
+    border:1.5px solid #BAE3F5;
+    color:#0B4660;
+    padding:16px 20px;
+    border-radius:14px;
+    margin-bottom:24px;
+    flex-wrap:wrap;
+  }
+  .aviso-telegram-texto{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-size:0.96rem;
+    font-weight:500;
+  }
+  .aviso-telegram-texto strong{
+    color:var(--ink);
+  }
+  .aviso-telegram .btn-telegram{
+    padding:10px 20px;
+    font-size:0.92rem;
+    white-space:nowrap;
+  }
   .btn-solid{
     background:var(--teal-deep);
     color:var(--white);
