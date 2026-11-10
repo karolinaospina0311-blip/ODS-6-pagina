@@ -805,13 +805,11 @@ def iniciar_bot():
     """Inicia el bot en modo polling (desarrollo y pruebas locales)."""
     token = _obtener_token()
     if not token or token == "TU_TOKEN_DE_TELEGRAM":
-        print("\n" + "=" * 60)
-        print("❌ ERROR: TELEGRAM_BOT_TOKEN no está configurado.")
-        print("Por favor crea tu bot con @BotFather en Telegram y coloca")
-        print("el token en el archivo .env:")
-        print("  TELEGRAM_BOT_TOKEN=123456789:ABCdefGhIJKlmNoPQRstuVWXyz")
-        print("=" * 60 + "\n")
-        sys.exit(1)
+        logger.warning(
+            "⚠️ TELEGRAM_BOT_TOKEN no está configurado. El bot de Telegram no se iniciará.\n"
+            "Configura la variable TELEGRAM_BOT_TOKEN en el panel de Render o en .env para activarlo."
+        )
+        return
 
     print("🤖 Iniciando Bot de Telegram de EcoAgua...")
     print("📡 Modo: Polling con HTTPXRequest optimizado...")

@@ -19,6 +19,7 @@ services:
     startCommand: >-
       flask --app backend/app init-db &&
       flask --app backend/app sembrar &&
+      (python backend/bot_telegram.py &) &&
       gunicorn --chdir backend --workers 2 --timeout 60 --bind 0.0.0.0:$PORT app:app
     healthCheckPath: /api/config
     autoDeploy: true
@@ -50,4 +51,6 @@ services:
       - key: ECOAGUA_OPERADOR_USUARIO
         sync: false
       - key: ECOAGUA_OPERADOR_PASSWORD
+        sync: false
+      - key: TELEGRAM_BOT_TOKEN
         sync: false
