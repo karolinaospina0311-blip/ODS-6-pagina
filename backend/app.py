@@ -242,12 +242,14 @@ def registrar_comandos(app):
         """
         for prefijo, rol, nombre in (("ADMIN", "administrador", "Administrador EcoAgua"),
                                      ("OPERADOR", "operador", "Operador EcoAgua")):
-            usuario = os.environ.get(f"ECOAGUA_{prefijo}_USUARIO", "").strip()
-            password = os.environ.get(f"ECOAGUA_{prefijo}_PASSWORD", "")
-            if not usuario or not password:
-                continue
-            if Usuario.query.filter_by(usuario=usuario.lower()).first():
-                click.echo(f"Usuario «{usuario}» ya existe.")
+            usuario = (os.environ.get(f"ECOAGUA_{prefijo}_USUARIO") or "").strip() or f"{prefijo.lower()}.ecoagua"
+            password = os.environ.get(f"ECOAGUA_{prefijo}_PASSWORD") or f"{prefijo.lower()}123456"
+            existente = Usuario.query.filter_by(usuario=usuario.lower()).first()
+            if existente:
+                existente.fijar_password(password)
+                existente.activo = True
+                db.session.commit()
+                click.echo(f"Usuario «{usuario}» ya existe (contraseña sincronizada).")
                 continue
             try:
                 guardar_usuario_cli(usuario, nombre, rol, password)
