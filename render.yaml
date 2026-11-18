@@ -1,14 +1,8 @@
 # EcoAgua · Despliegue en Render (Blueprint)
 # Render lee este archivo al crear un "Blueprint" desde el repositorio de GitHub:
-# crea la base de datos PostgreSQL y el servicio web, y los conecta.
+# crea el servicio web y permite conectar una base PostgreSQL externa.
 # Las contraseñas de los usuarios de prueba se escriben en el panel de Render (sync: false),
 # nunca en este archivo.
-
-databases:
-  - name: ecoagua-db
-    databaseName: ecoagua
-    user: ecoagua
-    plan: free
 
 services:
   - type: web
@@ -27,9 +21,7 @@ services:
       - key: PYTHON_VERSION
         value: "3.12.7"
       - key: DATABASE_URL
-        fromDatabase:
-          name: ecoagua-db
-          property: connectionString
+        sync: false
       - key: ECOAGUA_SECRET_KEY
         generateValue: true
       - key: ECOAGUA_PROXY
@@ -37,7 +29,7 @@ services:
       - key: ECOAGUA_COOKIE_SEGURA
         value: "1"
       - key: ECOAGUA_DATOS_EJEMPLO
-        value: "1"
+        value: "0"
       - key: ECOAGUA_MAPA_LAT
         value: "8.7575"
       - key: ECOAGUA_MAPA_LNG
